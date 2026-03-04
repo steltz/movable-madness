@@ -8,7 +8,7 @@ import {
   CardTitle,
   Input,
   Label,
-} from '@workspace/ui';
+} from '@movable-madness/ui';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../model/use-auth';

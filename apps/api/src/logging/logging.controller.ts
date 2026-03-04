@@ -1,6 +1,6 @@
+import { StructuredLogger } from '@movable-madness/logging/backend';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StructuredLogger } from '@workspace/logging/backend';
 import { FrontendErrorReportDto } from './dto/frontend-error-report.dto';
 
 @ApiTags('Logging')

@@ -1,6 +1,9 @@
+import type {
+  ApiResponse as AppApiResponse,
+  HealthCheckResponse,
+} from '@movable-madness/shared-types';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { ApiResponse as AppApiResponse, HealthCheckResponse } from '@workspace/shared-types';
 import { AppService } from './app.service';
 
 @ApiTags('App')

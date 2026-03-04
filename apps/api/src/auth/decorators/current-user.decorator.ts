@@ -1,5 +1,5 @@
+import type { AuthUser } from '@movable-madness/auth';
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
-import type { AuthUser } from '@workspace/auth';
 
 /**
  * Parameter decorator to extract the current authenticated user from the request.

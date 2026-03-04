@@ -1,6 +1,6 @@
+import type { AuthUser } from '@movable-madness/auth';
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { AuthUser } from '@workspace/auth';
 import { AuthGuard } from './auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 

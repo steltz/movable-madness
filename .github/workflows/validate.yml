@@ -1,0 +1,83 @@
+name: Validate
+
+on:
+  workflow_call:
+    inputs:
+      affected-base:
+        description: 'Base ref for Nx affected calculation'
+        required: false
+        type: string
+        default: 'origin/main'
+    outputs:
+      api-affected:
+        description: 'Whether the API project is affected by changes'
+        value: ${{ jobs.validate.outputs.api-affected }}
+      web-affected:
+        description: 'Whether the web project is affected by changes'
+        value: ${{ jobs.validate.outputs.web-affected }}
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    outputs:
+      api-affected: ${{ steps.check-affected.outputs.api }}
+      web-affected: ${{ steps.check-affected.outputs.web }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine base ref
+        id: base-ref
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "base=origin/main" >> $GITHUB_OUTPUT
+          else
+            echo "base=${{ inputs.affected-base }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Lint affected projects
+        run: pnpm nx affected -t lint --base=${{ steps.base-ref.outputs.base }}
+
+      - name: Test affected projects
+        run: pnpm nx affected -t test --base=${{ steps.base-ref.outputs.base }}
+
+      - name: Build affected projects
+        run: pnpm nx affected -t build --base=${{ steps.base-ref.outputs.base }}
+
+      - name: Check affected projects
+        id: check-affected
+        run: |
+          AFFECTED=$(pnpm nx show projects --affected --base=${{ steps.base-ref.outputs.base }})
+
+          if echo "$AFFECTED" | grep -q "^api$"; then
+            echo "api=true" >> $GITHUB_OUTPUT
+            echo "API is affected by this change"
+          else
+            echo "api=false" >> $GITHUB_OUTPUT
+            echo "API is not affected by this change"
+          fi
+
+          if echo "$AFFECTED" | grep -q "^web$"; then
+            echo "web=true" >> $GITHUB_OUTPUT
+            echo "Web is affected by this change"
+          else
+            echo "web=false" >> $GITHUB_OUTPUT
+            echo "Web is not affected by this change"
+          fi

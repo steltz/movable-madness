@@ -1,4 +1,4 @@
-import type { ApiResponse } from '@workspace/shared-types';
+import type { ApiResponse } from '@movable-madness/shared-types';
 import * as admin from 'firebase-admin';
 import { onRequest } from 'firebase-functions/v2/https';
 

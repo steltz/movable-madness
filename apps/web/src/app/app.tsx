@@ -1,5 +1,5 @@
-import type { ApiResponse } from '@workspace/shared-types';
-import { Button } from '@workspace/ui';
+import type { ApiResponse } from '@movable-madness/shared-types';
+import { Button } from '@movable-madness/ui';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { signOut } from '../features/auth';

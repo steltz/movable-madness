@@ -1,4 +1,4 @@
-import { logger } from '@workspace/logging/frontend';
+import { logger } from '@movable-madness/logging/frontend';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {

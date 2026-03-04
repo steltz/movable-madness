@@ -1,4 +1,4 @@
-import type { AuthUser } from '@workspace/auth';
+import type { AuthUser } from '@movable-madness/auth';
 import { onAuthStateChanged, type User } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getFirebaseAuth } from '../../../shared/config/firebase';

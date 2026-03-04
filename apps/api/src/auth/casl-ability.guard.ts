@@ -1,6 +1,6 @@
+import { type AppAbility, type AuthUser, createAbilityForUser } from '@movable-madness/auth';
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { type AppAbility, type AuthUser, createAbilityForUser } from '@workspace/auth';
 import {
   CHECK_POLICIES_KEY,
   type PolicyHandler,
