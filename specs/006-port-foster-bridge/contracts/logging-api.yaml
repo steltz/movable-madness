@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: Logging API
+  description: API for frontend error reporting
+  version: 1.0.0
+
+paths:
+  /api/v1/logs/errors:
+    post:
+      summary: Report frontend error
+      description: |
+        Receives error reports from the frontend application.
+        Includes breadcrumb trail for debugging.
+      operationId: reportFrontendError
+      tags:
+        - Logging
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrontendErrorReport'
+            examples:
+              errorWithBreadcrumbs:
+                summary: Error with breadcrumb trail
+                value:
+                  severity: ERROR
+                  message: "TypeError: Cannot read property 'map' of undefined"
+                  timestamp: "2026-01-18T10:30:00.000Z"
+                  service: web
+                  error:
+                    name: TypeError
+                    message: "Cannot read property 'map' of undefined"
+                    stack: "TypeError: Cannot read property 'map' of undefined\n    at ProductList..."
+                  breadcrumbs:
+                    - type: navigation
+                      timestamp: "2026-01-18T10:29:55.000Z"
+                      message: "Navigated to /products"
+                      category: navigation
+                      data:
+                        from: "/"
+                        to: "/products"
+                    - type: click
+                      timestamp: "2026-01-18T10:29:58.000Z"
+                      message: "Clicked 'Filter' button"
+                      category: ui
+                      data:
+                        element: button
+                        text: Filter
+                  environment:
+                    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)..."
+                    url: "https://app.example.com/products"
+                    referrer: "https://app.example.com/"
+      responses:
+        '201':
+          description: Error report received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorReportResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    FrontendErrorReport:
+      type: object
+      required:
+        - severity
+        - message
+        - timestamp
+        - service
+        - environment
+      properties:
+        severity:
+          $ref: '#/components/schemas/LogSeverity'
+        message:
+          type: string
+          minLength: 1
+          example: "TypeError: Cannot read property 'map' of undefined"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-01-18T10:30:00.000Z"
+        service:
+          type: string
+          minLength: 1
+          example: web
+        error:
+          $ref: '#/components/schemas/ErrorInfo'
+        breadcrumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Breadcrumb'
+          maxItems: 100
+        environment:
+          $ref: '#/components/schemas/Environment'
+        userId:
+          type: string
+          example: "user-123"
+        correlationId:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+
+    LogSeverity:
+      type: string
+      enum:
+        - DEBUG
+        - INFO
+        - WARNING
+        - ERROR
+        - CRITICAL
+      example: ERROR
+
+    ErrorInfo:
+      type: object
+      required:
+        - name
+        - message
+      properties:
+        name:
+          type: string
+          example: TypeError
+        message:
+          type: string
+          example: "Cannot read property 'map' of undefined"
+        stack:
+          type: string
+          example: "TypeError: Cannot read property 'map' of undefined\n    at ProductList..."
+
+    Breadcrumb:
+      type: object
+      required:
+        - type
+        - timestamp
+        - message
+      properties:
+        type:
+          type: string
+          enum:
+            - click
+            - navigation
+            - input
+            - api_request
+            - api_response
+            - error
+            - custom
+          example: click
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-01-18T10:29:58.000Z"
+        message:
+          type: string
+          example: "Clicked 'Filter' button"
+        category:
+          type: string
+          example: ui
+        data:
+          type: object
+          additionalProperties: true
+          example:
+            element: button
+            text: Filter
+
+    Environment:
+      type: object
+      required:
+        - userAgent
+        - url
+      properties:
+        userAgent:
+          type: string
+          example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+        url:
+          type: string
+          format: uri
+          example: "https://app.example.com/products"
+        referrer:
+          type: string
+          format: uri
+          example: "https://app.example.com/"
+
+    ErrorReportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        correlationId:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+
+    ValidationError:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: array
+          items:
+            type: string
+          example:
+            - "severity must be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL"
+            - "message should not be empty"
+        error:
+          type: string
+          example: Bad Request
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: Internal server error
+        error:
+          type: string
+          example: Internal Server Error

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/shared-types": ["libs/shared-types/src/index.ts"],
+      "@workspace/auth": ["libs/auth/src/index.ts"],
+      "@workspace/logging": ["libs/logging/src/index.ts"],
+      "@workspace/logging/backend": ["libs/logging/src/lib/backend/index.ts"],
+      "@workspace/logging/frontend": ["libs/logging/src/lib/frontend/index.ts"],
+      "@workspace/logging/shared": ["libs/logging/src/lib/shared/index.ts"],
+      "@workspace/ui": ["libs/ui/src/index.ts"],
+      "@workspace/ui/*": ["libs/ui/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

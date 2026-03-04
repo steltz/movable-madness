@@ -1,0 +1,18 @@
+{
+  "id": "2228ab76-a17a-4f7e-aabd-fed5b5b13193",
+  "name": "Staging",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://api-staging.example.com",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    }
+  ]
+}

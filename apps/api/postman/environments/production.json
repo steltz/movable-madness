@@ -1,0 +1,18 @@
+{
+  "id": "1b03115f-a41c-46ba-b009-95aa43e2482c",
+  "name": "Production",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.example.com",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    }
+  ]
+}
