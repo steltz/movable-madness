@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BracketEditorPage } from '../features/bracket/pages/BracketEditorPage';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
 import { AccountSettingsPage } from '../pages/admin/settings/account-settings-page';
 import { SubmittedBracketsPage } from '../pages/brackets/submitted-brackets-page';
@@ -32,6 +33,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/bracket/:userId" element={<BracketEditorPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/brackets" element={<SubmittedBracketsPage />} />
       <Route
