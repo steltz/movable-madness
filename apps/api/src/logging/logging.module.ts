@@ -1,16 +1,16 @@
 import {
+  CorrelationMiddleware,
+  RequestLoggingInterceptor,
+  StructuredLogger,
+} from '@movable-madness/logging/backend';
+import type { LoggingModuleOptions } from '@movable-madness/logging/shared';
+import {
   type DynamicModule,
   type MiddlewareConsumer,
   Module,
   type NestModule,
 } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import {
-  CorrelationMiddleware,
-  RequestLoggingInterceptor,
-  StructuredLogger,
-} from '@workspace/logging/backend';
-import type { LoggingModuleOptions } from '@workspace/logging/shared';
 import { LoggingController } from './logging.controller';
 
 @Module({})

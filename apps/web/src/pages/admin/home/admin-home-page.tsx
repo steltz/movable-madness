@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@workspace/ui';
+} from '@movable-madness/ui';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../../app/providers/auth-provider';
 

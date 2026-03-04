@@ -1,5 +1,5 @@
+import type { Breadcrumb, LogSeverity } from '@movable-madness/logging/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import type { Breadcrumb, LogSeverity } from '@workspace/logging/shared';
 
 class ErrorDetailDto {
   @ApiProperty({ description: 'Error name', example: 'TypeError' })
