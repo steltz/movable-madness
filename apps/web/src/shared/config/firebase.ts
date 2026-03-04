@@ -1,5 +1,6 @@
 import { type FirebaseApp, getApps, initializeApp } from 'firebase/app';
 import { type Auth, getAuth } from 'firebase/auth';
+import { type Firestore, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,6 +13,7 @@ const firebaseConfig = {
 
 let app: FirebaseApp;
 let auth: Auth;
+let db: Firestore;
 
 export function initFirebase(): { app: FirebaseApp; auth: Auth } {
   if (getApps().length === 0) {
@@ -28,4 +30,14 @@ export function getFirebaseAuth(): Auth {
     initFirebase();
   }
   return auth;
+}
+
+export function getFirebaseFirestore(): Firestore {
+  if (!db) {
+    if (getApps().length === 0) {
+      initFirebase();
+    }
+    db = getFirestore(getApps()[0]);
+  }
+  return db;
 }
