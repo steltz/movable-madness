@@ -1,20 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BracketsService } from './brackets.service';
-import { CreateBracketDto } from './dto/create-bracket.dto';
 
 @ApiTags('Brackets')
-@Controller('v1/brackets')
+@Controller('brackets')
 export class BracketsController {
   constructor(private readonly bracketsService: BracketsService) {}
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Submit a completed bracket' })
-  @ApiResponse({ status: 201, description: 'Bracket saved successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid bracket data' })
-  async createBracket(@Body() dto: CreateBracketDto) {
-    const bracket = await this.bracketsService.createBracket(dto);
-    return { success: true, data: bracket };
+  @Get(':bracketId')
+  @ApiOperation({ summary: 'Get a bracket by ID' })
+  @ApiResponse({ status: 200, description: 'Returns the bracket document' })
+  @ApiResponse({ status: 404, description: 'Bracket not found' })
+  getBracket(@Param('bracketId') bracketId: string) {
+    return this.bracketsService.getBracketById(bracketId);
   }
 }

@@ -1,0 +1,32 @@
+.bracket-round-col {
+  position: relative;
+}
+
+.bracket-matchup-wrapper {
+  position: relative;
+}
+
+/* Right-side connector: horizontal line from matchup to the right */
+.bracket-matchup-wrapper::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  width: 8px;
+  border-top: 1px solid #d1d5db; /* gray-300 */
+}
+
+/* Left-side connector: horizontal line from the left into matchup */
+.bracket-round-col:not(:first-child) .bracket-matchup-wrapper::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 8px;
+  border-top: 1px solid #d1d5db;
+}
+
+/* Hide right connector on last round */
+.bracket-round-col:last-child .bracket-matchup-wrapper::after {
+  display: none;
+}

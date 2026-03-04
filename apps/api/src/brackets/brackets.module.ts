@@ -5,5 +5,6 @@ import { BracketsService } from './brackets.service';
 @Module({
   controllers: [BracketsController],
   providers: [BracketsService],
+  exports: [BracketsService],
 })
 export class BracketsModule {}
