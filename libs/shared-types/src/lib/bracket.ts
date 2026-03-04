@@ -1,20 +1,20 @@
-export interface Team {
+export interface BracketDocument {
+  bracketName: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  picks: Record<string, string>;
+  teams: string[];
+}
+
+export interface Matchup {
   id: string;
-  name: string;
-  seed: number;
-  region: 'East' | 'West' | 'South' | 'Midwest';
+  teamA: string | null;
+  teamB: string | null;
+  winner: string | null;
 }
 
-export interface BracketEntry {
-  id?: string;
-  userId: string;
-  bracketName: string;
-  picks: Record<string, string>;
-  submittedAt?: string;
-}
-
-export interface CreateBracketRequest {
-  userId: string;
-  bracketName: string;
-  picks: Record<string, string>;
+export interface Round {
+  label: string;
+  matchups: Matchup[];
 }
