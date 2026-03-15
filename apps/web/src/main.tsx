@@ -1,4 +1,4 @@
-import { initLogger } from '@workspace/logging/frontend';
+import { initLogger } from '@movable-madness/logging/frontend';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './app/app';

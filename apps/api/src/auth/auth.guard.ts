@@ -1,5 +1,5 @@
+import type { AuthUser } from '@movable-madness/auth';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import type { AuthUser } from '@workspace/auth';
 import { FirebaseAdminService } from './firebase-admin.service';
 
 export interface RequestWithUser extends Request {

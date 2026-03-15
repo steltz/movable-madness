@@ -1,112 +1,91 @@
-# Nx Monorepo Template
+# Project Name
 
-A production-ready Nx monorepo template for full-stack TypeScript applications with React, NestJS, and Firebase Functions.
+A full-stack application built with React, NestJS, and Firebase Functions.
 
-## Features
+## Getting Started
 
-- **React + Vite** frontend with hot module replacement
-- **NestJS** backend ready for Cloud Run deployment
-- **Firebase Functions 2nd Gen** for serverless workloads
-- **Shared TypeScript types** across all applications
-- **Biome** for fast linting and formatting (no ESLint/Prettier)
-- **GitHub Actions CI** pipeline included
-- **Docker** configuration for Cloud Run deployment
+### Prerequisites
 
-## Quick Start
+- Node.js 18+
+- pnpm 9+
+- Firebase CLI (for functions deployment)
+- Google Cloud SDK (for Cloud Run deployment)
 
-### 1. Create a new repository from this template
+### Local Development
 
-Click the "Use this template" button on GitHub to create a new repository.
-
-### 2. Clone your new repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
-```
-
-### 3. Install dependencies
-
-```bash
-pnpm install
-```
-
-### 4. Run the setup script
-
-```bash
-pnpm setup
-```
-
-This interactive script will:
-- Rename the project to your chosen name
-- Configure GCP project settings
-- Set up Cloud Run IAM policies (optional)
-- Replace this README with project-specific documentation
-
-### 5. Start developing
+Start the development server:
 
 ```bash
 pnpm dev
+```
+
+This starts:
+- Frontend at http://localhost:4200
+- API at http://localhost:3000
+
+The frontend proxies `/api/*` requests to the backend automatically.
+
+### Building
+
+Build all applications:
+
+```bash
+pnpm build
+```
+
+### Linting and Formatting
+
+Check code quality:
+
+```bash
+pnpm lint
+```
+
+Format code:
+
+```bash
+pnpm format
 ```
 
 ## Project Structure
 
 ```
 apps/
-  web/        # React + Vite frontend (localhost:4200)
-  api/        # NestJS backend (localhost:3000)
+  web/        # React + Vite frontend
+  api/        # NestJS backend (Cloud Run)
   functions/  # Firebase Functions 2nd Gen
 libs/
   shared-types/  # Shared TypeScript interfaces
-tools/
-  scripts/    # Setup and utility scripts
 ```
 
-## Git Hooks
+## Deployment
 
-This project uses [Husky](https://typicode.github.io/husky/) for Git hooks to ensure code quality before commits reach CI/CD.
+### API (Cloud Run)
 
-### Pre-commit Hook
+Build and deploy the Docker image:
 
-Runs on every `git commit`:
-- Biome lint and format on staged files with auto-fix
-- Automatically re-stages fixed files
-- `nx affected -t lint test build` on changed projects (uses `--base=HEAD`)
+```bash
+docker build -f apps/api/Dockerfile -t gcr.io/PROJECT_ID/api .
+docker push gcr.io/PROJECT_ID/api
+gcloud run deploy api --image gcr.io/PROJECT_ID/api --region REGION
+```
 
-### Pre-push Hook
+### Functions
 
-Runs on every `git push`:
-- `nx affected -t lint test build` on all branch changes (uses `--base=origin/main`)
-- Blocks push if any check fails
+Deploy Firebase Functions:
 
-Hooks are automatically installed when you run `pnpm install` (via the `prepare` script).
+```bash
+firebase deploy --only functions
+```
 
-**Bypass**: Use `--no-verify` for emergencies, but CI/CD will still enforce all checks.
+### Hosting
 
-## Available Scripts
+Deploy frontend to Firebase Hosting:
 
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start frontend and backend in development mode |
-| `pnpm build` | Build all applications |
-| `pnpm lint` | Run Biome linter |
-| `pnpm format` | Format code with Biome |
-| `pnpm setup` | Run project setup wizard |
-
-## Tech Stack
-
-- **Nx 19.x** - Monorepo build system
-- **React 18.x** - Frontend framework
-- **Vite 5.x** - Frontend bundler
-- **NestJS 10.x** - Backend framework
-- **Firebase Functions** - Serverless functions (2nd Gen)
-- **Biome** - Linting and formatting
-- **pnpm** - Package manager
-
-## Requirements
-
-- Node.js 18+
-- pnpm 9+
+```bash
+pnpm build
+firebase deploy --only hosting
+```
 
 ## License
 

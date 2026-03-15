@@ -1,6 +1,6 @@
+import { Actions, type AuthUser } from '@movable-madness/auth';
 import { Controller, Get, NotFoundException, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Actions, type AuthUser } from '@workspace/auth';
 import { AuthGuard } from '../auth/auth.guard';
 import { PoliciesGuard } from '../auth/casl-ability.guard';
 import { CheckPolicies } from '../auth/decorators/check-policies.decorator';

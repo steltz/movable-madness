@@ -1,6 +1,6 @@
+import { StructuredLogger } from '@movable-madness/logging/backend';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { StructuredLogger } from '@workspace/logging/backend';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {

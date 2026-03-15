@@ -21,14 +21,14 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@workspace/shared-types": ["libs/shared-types/src/index.ts"],
-      "@workspace/auth": ["libs/auth/src/index.ts"],
-      "@workspace/logging": ["libs/logging/src/index.ts"],
-      "@workspace/logging/backend": ["libs/logging/src/lib/backend/index.ts"],
-      "@workspace/logging/frontend": ["libs/logging/src/lib/frontend/index.ts"],
-      "@workspace/logging/shared": ["libs/logging/src/lib/shared/index.ts"],
-      "@workspace/ui": ["libs/ui/src/index.ts"],
-      "@workspace/ui/*": ["libs/ui/src/*"]
+      "@movable-madness/shared-types": ["libs/shared-types/src/index.ts"],
+      "@movable-madness/auth": ["libs/auth/src/index.ts"],
+      "@movable-madness/logging": ["libs/logging/src/index.ts"],
+      "@movable-madness/logging/backend": ["libs/logging/src/lib/backend/index.ts"],
+      "@movable-madness/logging/frontend": ["libs/logging/src/lib/frontend/index.ts"],
+      "@movable-madness/logging/shared": ["libs/logging/src/lib/shared/index.ts"],
+      "@movable-madness/ui": ["libs/ui/src/index.ts"],
+      "@movable-madness/ui/*": ["libs/ui/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

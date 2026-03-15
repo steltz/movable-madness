@@ -1,5 +1,5 @@
+import type { ApiResponse, HealthCheckResponse } from '@movable-madness/shared-types';
 import { Injectable } from '@nestjs/common';
-import type { ApiResponse, HealthCheckResponse } from '@workspace/shared-types';
 
 @Injectable()
 export class AppService {

@@ -1,5 +1,5 @@
+import type { Action, AppAbility, Subjects } from '@movable-madness/auth';
 import { SetMetadata } from '@nestjs/common';
-import type { Action, AppAbility, Subjects } from '@workspace/auth';
 
 /**
  * Policy handler type - checks if ability allows the action.

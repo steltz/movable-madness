@@ -1,5 +1,5 @@
+import type { AuthUser } from '@movable-madness/auth';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import type { AuthUser } from '@workspace/auth';
 import { applicationDefault, getApps, initializeApp } from 'firebase-admin/app';
 import { type DecodedIdToken, getAuth } from 'firebase-admin/auth';
 
