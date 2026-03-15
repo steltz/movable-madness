@@ -3,6 +3,7 @@ import { Button } from '@movable-madness/ui';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { signOut } from '../features/auth';
+import { BracketEditorPage } from '../features/bracket';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
 import { AccountSettingsPage } from '../pages/admin/settings/account-settings-page';
 import { SignInPage } from '../pages/sign-in/sign-in-page';
@@ -113,6 +114,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route path="/bracket/edit" element={<BracketEditorPage />} />
     </Routes>
   );
 }
