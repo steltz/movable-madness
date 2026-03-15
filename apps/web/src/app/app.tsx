@@ -1,7 +1,7 @@
 import type { ApiResponse } from '@movable-madness/shared-types';
 import { Button } from '@movable-madness/ui';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import { signOut } from '../features/auth';
 import { BracketEditorPage } from '../features/bracket';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
@@ -65,7 +65,7 @@ function HomePage() {
             </>
           ) : (
             <Button asChild size="sm">
-              <a href="/sign-in">Sign In</a>
+              <Link to="/sign-in">Sign In</Link>
             </Button>
           )}
         </nav>
@@ -109,7 +109,7 @@ function BracketProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated || !isAnonymous) {
-    return <Navigate to="/bracket/login" replace />;
+    return <Navigate to="/brackets/login" replace />;
   }
 
   return <>{children}</>;
@@ -120,9 +120,9 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/sign-in" element={<SignInPage />} />
-      <Route path="/bracket/login" element={<BracketLoginPage />} />
+      <Route path="/brackets/login" element={<BracketLoginPage />} />
       <Route
-        path="/bracket/dashboard"
+        path="/brackets/dashboard"
         element={
           <BracketProtectedRoute>
             <BracketDashboardPage />
@@ -147,7 +147,25 @@ function AppRoutes() {
         }
       />
       <Route path="/brackets/:bracketId" element={<ViewBracketPage />} />
-      <Route path="/bracket/edit" element={<BracketEditorPage />} />
+      <Route
+        path="/brackets/edit"
+        element={
+          <BracketProtectedRoute>
+            <BracketEditorPage />
+          </BracketProtectedRoute>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
+            <h1 className="text-2xl font-bold text-foreground">Page not found</h1>
+            <Link to="/" className="text-sm text-[#E31C79] underline hover:text-[#c8186b]">
+              Go home
+            </Link>
+          </div>
+        }
+      />
     </Routes>
   );
 }
