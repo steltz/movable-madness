@@ -1,0 +1,213 @@
+name: Deploy Firestore
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firestore.rules'
+      - 'firestore.indexes.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'firestore.rules'
+      - 'firestore.indexes.json'
+  workflow_dispatch:
+    inputs:
+      deploy_rules:
+        description: 'Deploy Firestore rules'
+        required: false
+        type: boolean
+        default: true
+      deploy_indexes:
+        description: 'Deploy Firestore indexes'
+        required: false
+        type: boolean
+        default: true
+
+concurrency:
+  group: firestore-deploy-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+
+jobs:
+  validate:
+    name: Validate Firestore Files
+    runs-on: ubuntu-latest
+    outputs:
+      rules_changed: ${{ steps.changes.outputs.rules }}
+      indexes_changed: ${{ steps.changes.outputs.indexes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for file changes
+        id: changes
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "rules=${{ github.event.inputs.deploy_rules }}" >> $GITHUB_OUTPUT
+            echo "indexes=${{ github.event.inputs.deploy_indexes }}" >> $GITHUB_OUTPUT
+          else
+            # Check if files changed between commits
+            RULES_CHANGED=false
+            INDEXES_CHANGED=false
+
+            if git diff --name-only HEAD~1 HEAD | grep -q "firestore.rules"; then
+              RULES_CHANGED=true
+            fi
+
+            if git diff --name-only HEAD~1 HEAD | grep -q "firestore.indexes.json"; then
+              INDEXES_CHANGED=true
+            fi
+
+            echo "rules=$RULES_CHANGED" >> $GITHUB_OUTPUT
+            echo "indexes=$INDEXES_CHANGED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate firestore.indexes.json
+        if: steps.changes.outputs.indexes == 'true'
+        run: |
+          echo "Validating firestore.indexes.json..."
+          node -e "
+            const fs = require('fs');
+            try {
+              const content = fs.readFileSync('firestore.indexes.json', 'utf8');
+              const parsed = JSON.parse(content);
+              if (!parsed.indexes || !Array.isArray(parsed.indexes)) {
+                console.error('Invalid structure: missing indexes array');
+                process.exit(1);
+              }
+              console.log('✅ firestore.indexes.json is valid JSON');
+              console.log('   Found', parsed.indexes.length, 'index definitions');
+              if (parsed.fieldOverrides) {
+                console.log('   Found', parsed.fieldOverrides.length, 'field overrides');
+              }
+            } catch (e) {
+              console.error('❌ Invalid JSON:', e.message);
+              process.exit(1);
+            }
+          "
+
+      - name: Validate firestore.rules syntax
+        if: steps.changes.outputs.rules == 'true'
+        run: |
+          echo "Checking firestore.rules syntax..."
+          if [ -f "firestore.rules" ]; then
+            # Basic syntax check - ensure it starts with rules_version
+            if grep -q "^rules_version" firestore.rules; then
+              echo "✅ firestore.rules has valid header"
+            else
+              echo "❌ firestore.rules should start with rules_version declaration"
+              exit 1
+            fi
+          else
+            echo "❌ firestore.rules file not found"
+            exit 1
+          fi
+
+  deploy:
+    name: Deploy Firestore
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy Firestore Rules
+        if: needs.validate.outputs.rules_changed == 'true'
+        run: |
+          echo "Deploying Firestore rules..."
+          firebase deploy --only firestore:rules --project ${{ env.FIREBASE_PROJECT_ID }}
+          echo "✅ Firestore rules deployed successfully"
+
+      - name: Deploy Firestore Indexes
+        if: needs.validate.outputs.indexes_changed == 'true'
+        run: |
+          echo "Deploying Firestore indexes..."
+          firebase deploy --only firestore:indexes --project ${{ env.FIREBASE_PROJECT_ID }}
+          echo "✅ Firestore indexes deployed successfully"
+
+      - name: Write deployment summary
+        run: |
+          echo "## Firestore Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ needs.validate.outputs.rules_changed }}" == "true" ]]; then
+            echo "| Firestore Rules | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Firestore Rules | ⏭️ Skipped (no changes) |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [[ "${{ needs.validate.outputs.indexes_changed }}" == "true" ]]; then
+            echo "| Firestore Indexes | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Firestore Indexes | ⏭️ Skipped (no changes) |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Project:** \`${{ env.FIREBASE_PROJECT_ID }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  pr-comment:
+    name: PR Validation Comment
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const rulesChanged = '${{ needs.validate.outputs.rules_changed }}' === 'true';
+            const indexesChanged = '${{ needs.validate.outputs.indexes_changed }}' === 'true';
+
+            let body = '## Firestore Validation Results\n\n';
+            body += '| File | Status |\n';
+            body += '|------|--------|\n';
+
+            if (rulesChanged) {
+              body += '| `firestore.rules` | ✅ Valid |\n';
+            }
+            if (indexesChanged) {
+              body += '| `firestore.indexes.json` | ✅ Valid JSON |\n';
+            }
+
+            if (!rulesChanged && !indexesChanged) {
+              body += '| No Firestore files changed | ⏭️ |\n';
+            }
+
+            body += '\n> 🔥 These changes will be deployed automatically when merged to main.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

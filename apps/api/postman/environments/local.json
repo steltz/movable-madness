@@ -1,0 +1,18 @@
+{
+  "id": "549efd75-a113-4210-88ae-69f6711b67cd",
+  "name": "Local Development",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "enabled": true,
+      "type": "default"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "enabled": true,
+      "type": "secret"
+    }
+  ]
+}

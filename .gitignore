@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+.nx
+out-tsc
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Coverage
+coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Vite
+vite.config.*.timestamp*
+
+# Firebase
+.firebase
+
+# Cache
+.cache

@@ -1,0 +1,12 @@
+node_modules
+dist
+.nx
+.git
+.github
+*.md
+*.log
+.env*
+coverage
+.vscode
+.idea
+specs

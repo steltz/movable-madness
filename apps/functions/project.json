@@ -1,0 +1,28 @@
+{
+  "name": "functions",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/functions/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "main": "apps/functions/src/main.ts",
+        "outputPath": "dist/apps/functions",
+        "tsConfig": "apps/functions/tsconfig.app.json",
+        "platform": "node",
+        "format": ["cjs"],
+        "bundle": true,
+        "generatePackageJson": true,
+        "thirdParty": false,
+        "esbuildOptions": {
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      }
+    }
+  }
+}

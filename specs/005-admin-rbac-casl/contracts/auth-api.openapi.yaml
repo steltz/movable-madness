@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Scaffold API - Authentication
+  description: |
+    Authentication and authorization endpoints for the Scaffold API.
+    Uses Firebase Auth for identity and CASL for permissions.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local Development
+  - url: https://api-staging.example.com
+    description: Staging
+  - url: https://api.example.com
+    description: Production
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Firebase ID Token
+
+  schemas:
+    User:
+      type: object
+      required:
+        - uid
+        - email
+        - role
+      properties:
+        uid:
+          type: string
+          description: Firebase Auth user ID
+          example: "abc123xyz789"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "admin@admin.com"
+        role:
+          type: string
+          enum: [admin]
+          description: User's role
+          example: "admin"
+        displayName:
+          type: string
+          description: User's display name
+          example: "Admin User"
+
+    CurrentUser:
+      type: object
+      required:
+        - uid
+        - email
+        - role
+      properties:
+        uid:
+          type: string
+          description: Firebase Auth user ID
+        email:
+          type: string
+          format: email
+          description: User's email address
+        role:
+          type: string
+          enum: [admin]
+          description: User's role from custom claims
+
+    ErrorResponse:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          description: HTTP status code
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Error type
+
+    ApiResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        data:
+          description: Response data (varies by endpoint)
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            code:
+              type: string
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 401
+            message: "Unauthorized"
+            error: "Unauthorized"
+
+    Forbidden:
+      description: Authenticated but lacks required permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            statusCode: 403
+            message: "Forbidden resource"
+            error: "Forbidden"
+
+paths:
+  /auth/me:
+    get:
+      summary: Get current authenticated user
+      description: |
+        Returns the currently authenticated user's information extracted from
+        the Firebase ID token. Requires valid authentication.
+      operationId: getCurrentUser
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CurrentUser'
+              example:
+                success: true
+                data:
+                  uid: "abc123xyz789"
+                  email: "admin@admin.com"
+                  role: "admin"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users:
+    get:
+      summary: List all users
+      description: |
+        Returns a list of all users. Requires admin role.
+      operationId: listUsers
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+              example:
+                success: true
+                data:
+                  - uid: "abc123xyz789"
+                    email: "admin@admin.com"
+                    role: "admin"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /users/{uid}:
+    get:
+      summary: Get user by ID
+      description: |
+        Returns a specific user by their UID. Requires admin role or
+        the user to be requesting their own profile.
+      operationId: getUserById
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: User's Firebase Auth UID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                statusCode: 404
+                message: "User not found"
+                error: "Not Found"
+
+tags:
+  - name: Authentication
+    description: Authentication and session management
+  - name: Users
+    description: User management endpoints
