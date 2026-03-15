@@ -15,6 +15,7 @@
  */
 export const Roles = {
   ADMIN: 'admin',
+  BRACKET_USER: 'bracket_user',
 } as const;
 
 export type Role = (typeof Roles)[keyof typeof Roles];

@@ -1,5 +1,6 @@
 import {
   type Auth,
+  signInAnonymously as firebaseSignInAnonymously,
   signOut as firebaseSignOut,
   signInWithEmailAndPassword,
   type User,
@@ -21,6 +22,15 @@ export async function signIn(email: string, password: string): Promise<User> {
 export async function signOut(): Promise<void> {
   const auth = getFirebaseAuth();
   await firebaseSignOut(auth);
+}
+
+/**
+ * Signs in a user anonymously for bracket tournament access.
+ */
+export async function signInAnonymously(): Promise<User> {
+  const auth = getFirebaseAuth();
+  const credential = await firebaseSignInAnonymously(auth);
+  return credential.user;
 }
 
 /**

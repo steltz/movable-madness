@@ -1,13 +1,50 @@
+import type { AuthUser } from '@movable-madness/auth';
 import type { ApiResponse, BracketDocument } from '@movable-madness/shared-types';
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags, ApiResponse as SwaggerResponse } from '@nestjs/swagger';
 import type { Response } from 'express';
+import { AuthGuard } from '../auth/auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { BracketsService } from './brackets.service';
+
+interface JoinBracketBody {
+  bracketName: string;
+}
 
 @ApiTags('Brackets')
 @Controller('brackets')
 export class BracketsController {
   constructor(private readonly bracketsService: BracketsService) {}
+
+  @Post('join')
+  @UseGuards(AuthGuard)
+  async join(@CurrentUser() user: AuthUser, @Body() body: JoinBracketBody) {
+    const trimmedName = body.bracketName?.trim();
+
+    if (!trimmedName || trimmedName.length === 0) {
+      throw new BadRequestException('Bracket name is required');
+    }
+
+    if (trimmedName.length > 50) {
+      throw new BadRequestException('Bracket name must be 50 characters or less');
+    }
+
+    await this.bracketsService.joinBracket(user.uid, trimmedName);
+
+    return {
+      success: true,
+      data: { bracketName: trimmedName },
+    };
+  }
 
   @Get(':bracketId')
   @ApiOperation({ summary: 'Get a bracket by ID' })

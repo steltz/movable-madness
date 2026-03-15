@@ -30,10 +30,13 @@ export class FirebaseAdminService {
    * Extracts AuthUser from a decoded Firebase ID token.
    */
   extractUser(decodedToken: DecodedIdToken): AuthUser {
+    const isAnonymous = decodedToken.firebase?.sign_in_provider === 'anonymous';
+    const defaultRole = isAnonymous ? 'bracket_user' : 'admin';
+
     return {
       uid: decodedToken.uid,
       email: decodedToken.email ?? '',
-      role: (decodedToken.role as AuthUser['role']) ?? 'admin',
+      role: (decodedToken.role as AuthUser['role']) ?? defaultRole,
     };
   }
 }

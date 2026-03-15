@@ -6,6 +6,8 @@ import { signOut } from '../features/auth';
 import { BracketEditorPage } from '../features/bracket';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
 import { AccountSettingsPage } from '../pages/admin/settings/account-settings-page';
+import { BracketDashboardPage } from '../pages/bracket/dashboard/bracket-dashboard-page';
+import { BracketLoginPage } from '../pages/bracket/login/bracket-login-page';
 import { BracketsDirectoryPage } from '../pages/brackets/brackets-directory-page';
 import { ViewBracketPage } from '../pages/brackets/view/ViewBracketPage';
 import { SignInPage } from '../pages/sign-in/sign-in-page';
@@ -78,7 +80,7 @@ function HomePage() {
 }
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, loading } = useAuthContext();
+  const { isAuthenticated, isAnonymous, loading } = useAuthContext();
 
   if (loading) {
     return (
@@ -88,8 +90,26 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || isAnonymous) {
     return <Navigate to="/sign-in" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function BracketProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isAnonymous, loading } = useAuthContext();
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !isAnonymous) {
+    return <Navigate to="/bracket/login" replace />;
   }
 
   return <>{children}</>;
@@ -100,6 +120,15 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/bracket/login" element={<BracketLoginPage />} />
+      <Route
+        path="/bracket/dashboard"
+        element={
+          <BracketProtectedRoute>
+            <BracketDashboardPage />
+          </BracketProtectedRoute>
+        }
+      />
       <Route path="/brackets" element={<BracketsDirectoryPage />} />
       <Route
         path="/admin"

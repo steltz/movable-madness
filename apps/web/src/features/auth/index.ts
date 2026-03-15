@@ -1,5 +1,5 @@
 // API
-export { getIdToken, getUserRole, signIn, signOut } from './api/firebase-auth';
+export { getIdToken, getUserRole, signIn, signInAnonymously, signOut } from './api/firebase-auth';
 
 // Model
 export { useAuth } from './model/use-auth';

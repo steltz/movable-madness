@@ -13,6 +13,14 @@ service cloud.firestore {
         request.auth.token.role == 'admin';
     }
 
+    // Bracket entries collection
+    match /bracketEntries/{userId} {
+      // Allow read if authenticated user is reading their own document
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // All writes go through the NestJS API via Firebase Admin SDK
+    }
+
     // Brackets subcollection — public read for directory
     match /{path=**}/brackets/{bracketId} {
       allow read: if true;
