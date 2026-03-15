@@ -28,6 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     root.classList.remove('light', 'dark');
     root.classList.add(resolved);
+    root.style.colorScheme = resolved;
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
@@ -37,8 +38,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = () => {
       const root = document.documentElement;
+      const resolved = getSystemTheme();
       root.classList.remove('light', 'dark');
-      root.classList.add(getSystemTheme());
+      root.classList.add(resolved);
+      root.style.colorScheme = resolved;
     };
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
