@@ -12,4 +12,12 @@ export {
 } from './components/card';
 export { Input } from './components/input';
 export { Label } from './components/label';
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/table';
 export { cn } from './lib/utils';

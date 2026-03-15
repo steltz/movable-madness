@@ -6,6 +6,7 @@ import { signOut } from '../features/auth';
 import { BracketEditorPage } from '../features/bracket';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
 import { AccountSettingsPage } from '../pages/admin/settings/account-settings-page';
+import { BracketsDirectoryPage } from '../pages/brackets/brackets-directory-page';
 import { SignInPage } from '../pages/sign-in/sign-in-page';
 import { AppErrorBoundary } from './app-error-boundary';
 import { AuthProvider, useAuthContext } from './providers/auth-provider';
@@ -98,6 +99,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/brackets" element={<BracketsDirectoryPage />} />
       <Route
         path="/admin"
         element={
