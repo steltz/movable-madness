@@ -3,7 +3,7 @@ import { useAuthContext } from '../../app/providers/auth-provider';
 import { SignInForm } from '../../features/auth';
 
 export function SignInPage() {
-  const { user, loading } = useAuthContext();
+  const { user, isAnonymous, loading } = useAuthContext();
 
   if (loading) {
     return (
@@ -13,7 +13,7 @@ export function SignInPage() {
     );
   }
 
-  if (user) {
+  if (user && !isAnonymous) {
     return <Navigate to="/admin" replace />;
   }
 

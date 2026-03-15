@@ -1,7 +1,7 @@
 import type { BracketDocument } from '@movable-madness/shared-types';
 import { Alert, AlertDescription } from '@movable-madness/ui';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { fetchBracket } from '../../../features/brackets/api/brackets-api';
 import { BracketGrid } from '../../../features/brackets/components/BracketGrid';
 import { BracketHeader } from '../../../features/brackets/components/BracketHeader';
@@ -79,9 +79,9 @@ export function ViewBracketPage() {
             >
               Try again
             </button>
-            <a href="/" className="text-sm text-gray-500 underline hover:text-gray-700">
+            <Link to="/" className="text-sm text-gray-500 underline hover:text-gray-700">
               Go home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

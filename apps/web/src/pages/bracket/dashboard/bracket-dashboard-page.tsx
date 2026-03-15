@@ -10,7 +10,7 @@ export function BracketDashboardPage() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate('/bracket/login', { replace: true });
+      navigate('/brackets/login', { replace: true });
     } catch (err) {
       console.error('Sign out failed:', err);
     }
@@ -44,7 +44,7 @@ export function BracketDashboardPage() {
 
         <div className="flex flex-col gap-5">
           {/* Edit My Bracket card */}
-          <Link to="/bracket/edit" className="block">
+          <Link to="/brackets/edit" className="block">
             <div className="rounded-xl border-t-[3px] border-t-[#E31C79] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] bg-[#FDE8F1] text-2xl">

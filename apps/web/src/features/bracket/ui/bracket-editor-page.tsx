@@ -1,14 +1,14 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useAuthContext } from '../../../app/providers/auth-provider';
 import { useBracket } from '../model/use-bracket';
 import { BracketGrid } from './bracket-grid';
 import { SubmitFooter } from './submit-footer';
 
 export function BracketEditorPage() {
-  const [searchParams] = useSearchParams();
-  const bracketName = searchParams.get('name');
+  const { bracketName } = useAuthContext();
 
   if (!bracketName) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/brackets/dashboard" replace />;
   }
 
   return <BracketEditorContent bracketName={bracketName} />;

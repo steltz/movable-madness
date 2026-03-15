@@ -23,7 +23,7 @@ export function BracketLoginPage() {
   // Redirect if already authenticated as anonymous user (but not while submitting,
   // since signInAnonymously fires onAuthStateChanged before the API call completes)
   if (isAuthenticated && isAnonymous && !submitting) {
-    return <Navigate to="/bracket/dashboard" replace />;
+    return <Navigate to="/brackets/dashboard" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +44,7 @@ export function BracketLoginPage() {
     try {
       await signInAnonymously();
       await post('/brackets/join', { bracketName: trimmed });
-      navigate('/bracket/dashboard', { replace: true });
+      navigate('/brackets/dashboard', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {

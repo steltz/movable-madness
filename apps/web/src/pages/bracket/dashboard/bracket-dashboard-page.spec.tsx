@@ -45,10 +45,10 @@ describe('BracketDashboardPage', () => {
     expect(screen.getByText('See how others filled out their brackets')).toBeInTheDocument();
   });
 
-  it('should link Edit My Bracket to /bracket/edit', () => {
+  it('should link Edit My Bracket to /brackets/edit', () => {
     renderWithRouter();
     const link = screen.getByText('Edit My Bracket').closest('a');
-    expect(link).toHaveAttribute('href', '/bracket/edit');
+    expect(link).toHaveAttribute('href', '/brackets/edit');
   });
 
   it('should link View Submitted Brackets to /brackets', () => {
