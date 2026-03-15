@@ -1,3 +1,22 @@
+export interface BracketDocument {
+  id?: string;
+  bracketName: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  teams: string[];
+  picks: Record<string, string>;
+}
+
+export interface Matchup {
+  key: string;
+  topTeam: string | null;
+  bottomTeam: string | null;
+  winner: string | null;
+  topSeed?: number;
+  bottomSeed?: number;
+}
+
 export interface Team {
   id: number;
   name: string;

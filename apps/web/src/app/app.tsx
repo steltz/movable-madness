@@ -7,6 +7,7 @@ import { BracketEditorPage } from '../features/bracket';
 import { AdminHomePage } from '../pages/admin/home/admin-home-page';
 import { AccountSettingsPage } from '../pages/admin/settings/account-settings-page';
 import { BracketsDirectoryPage } from '../pages/brackets/brackets-directory-page';
+import { ViewBracketPage } from '../pages/brackets/view/ViewBracketPage';
 import { SignInPage } from '../pages/sign-in/sign-in-page';
 import { AppErrorBoundary } from './app-error-boundary';
 import { AuthProvider, useAuthContext } from './providers/auth-provider';
@@ -116,6 +117,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route path="/brackets/:bracketId" element={<ViewBracketPage />} />
       <Route path="/bracket/edit" element={<BracketEditorPage />} />
     </Routes>
   );

@@ -12,6 +12,7 @@
     "setup": "npx tsx tools/scripts/setup-project.ts",
     "postman:generate": "npx tsx tools/scripts/generate-postman.ts",
     "seed:admin": "npx tsx tools/scripts/seed-admin.ts",
+    "seed:bracket": "npx tsx tools/scripts/seed-bracket.ts",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "20.19.9",
