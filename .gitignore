@@ -37,4 +37,6 @@ vite.config.*.timestamp*
 
 # Cache
 .cache
+
+# Superpowers brainstorm
 .superpowers/
