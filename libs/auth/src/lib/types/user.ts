@@ -6,7 +6,7 @@ import type { Role } from './roles';
  */
 export interface AuthUser {
   uid: string;
-  email: string;
+  email?: string;
   role: Role;
 }
 

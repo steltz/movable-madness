@@ -29,6 +29,11 @@ export function createAbilityForUser(user: AuthUser): AppAbility {
       can(Actions.MANAGE, 'all');
       break;
 
+    case Roles.BRACKET_USER:
+      // Bracket users have no admin permissions
+      // They interact with bracket entries only through the API
+      break;
+
     default:
       // Unrecognized roles get no permissions (default deny)
       break;
