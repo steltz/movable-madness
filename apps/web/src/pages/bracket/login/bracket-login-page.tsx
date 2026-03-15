@@ -72,7 +72,7 @@ export function BracketLoginPage() {
               onChange={(e) => setBracketName(e.target.value)}
               maxLength={50}
               disabled={submitting}
-              className="w-full"
+              className="w-full dark:text-gray-900"
             />
           </div>
 
