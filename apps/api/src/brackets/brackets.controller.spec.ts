@@ -10,6 +10,7 @@ describe('BracketsController', () => {
   beforeEach(() => {
     service = {
       joinBracket: jest.fn(),
+      findByUserId: jest.fn(),
     } as unknown as jest.Mocked<BracketsService>;
     controller = new BracketsController(service);
   });
@@ -49,6 +50,51 @@ describe('BracketsController', () => {
       const longName = 'a'.repeat(51);
       await expect(controller.join(mockUser, { bracketName: longName })).rejects.toThrow(
         BadRequestException,
+      );
+    });
+  });
+
+  describe('getMyBracket', () => {
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as unknown as import('express').Response;
+
+    it('should return the bracket when one exists', async () => {
+      const bracket = {
+        id: 'bracket-abc',
+        bracketName: 'My Bracket',
+        userId: 'user-123',
+        picks: { R1_M0: '1' },
+        teams: [],
+        createdAt: '2026-03-15T00:00:00Z',
+        updatedAt: '2026-03-15T00:00:00Z',
+      };
+      service.findByUserId.mockResolvedValue(bracket);
+
+      await controller.getMyBracket(mockUser, mockRes);
+
+      expect(service.findByUserId).toHaveBeenCalledWith('user-123');
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: true,
+          data: bracket,
+        }),
+      );
+    });
+
+    it('should return 404 when no bracket exists', async () => {
+      service.findByUserId.mockResolvedValue(null);
+
+      await controller.getMyBracket(mockUser, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(404);
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: { code: 'BRACKET_NOT_FOUND', message: 'Bracket not found' },
+        }),
       );
     });
   });

@@ -33,7 +33,6 @@ export class BracketsService {
 
   async submitBracket(uid: string, submission: BracketSubmission): Promise<string> {
     const db = getFirestore();
-    const docRef = db.collection('brackets').doc();
 
     const picks: Record<string, string> = {};
     for (const [key, value] of Object.entries(submission.picks)) {
@@ -42,6 +41,18 @@ export class BracketsService {
       }
     }
 
+    const existing = await this.findByUserId(uid);
+
+    if (existing?.id) {
+      const docRef = db.collection('brackets').doc(existing.id);
+      await docRef.update({
+        picks,
+        updatedAt: FieldValue.serverTimestamp(),
+      });
+      return existing.id;
+    }
+
+    const docRef = db.collection('brackets').doc();
     await docRef.set({
       bracketName: submission.bracketName,
       userId: uid,
@@ -52,6 +63,24 @@ export class BracketsService {
     });
 
     return docRef.id;
+  }
+
+  async findByUserId(uid: string): Promise<BracketDocument | null> {
+    const snapshot = await getFirestore()
+      .collection('brackets')
+      .where('userId', '==', uid)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      return null;
+    }
+
+    const doc = snapshot.docs[0];
+    return {
+      id: doc.id,
+      ...(doc.data() as Omit<BracketDocument, 'id'>),
+    };
   }
 
   async findById(bracketId: string): Promise<BracketDocument | null> {

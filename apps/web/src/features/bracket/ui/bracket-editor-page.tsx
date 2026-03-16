@@ -37,6 +37,7 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
     isSubmitting,
     submitError,
     isSubmitted,
+    isLoading,
     quickPick,
   } = useBracket({ bracketName });
 
@@ -54,6 +55,14 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
     quickPick();
     setShowConfirm(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-muted-foreground">Loading bracket...</p>
+      </div>
+    );
+  }
 
   if (isSubmitted) {
     return <Navigate to="/brackets" replace />;
