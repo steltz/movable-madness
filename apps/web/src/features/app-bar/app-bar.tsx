@@ -37,7 +37,7 @@ export function AppBar() {
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b-2 border-b-[#E31C79] bg-card px-6">
+    <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b-2 border-b-[#E31C79] bg-background px-6">
       <div className="flex items-center gap-3">
         <Link to="/" className="text-[15px] font-bold text-[#E31C79] hover:text-[#c8186b]">
           Movable Madness

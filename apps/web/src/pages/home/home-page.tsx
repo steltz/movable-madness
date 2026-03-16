@@ -13,7 +13,7 @@ export function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-muted">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <p className="text-muted-foreground">Loading...</p>
       </div>
     );
@@ -54,7 +54,7 @@ export function HomePage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted p-4 font-[Inter,system-ui,sans-serif]">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 font-[Inter,system-ui,sans-serif]">
       <div className="w-full max-w-[400px] rounded-xl bg-card p-10 shadow-lg text-center dark:shadow-xl dark:shadow-black/20">
         <div className="mb-2 text-4xl">🏀</div>
         <h1 className="mb-1 text-2xl font-bold text-foreground">Movable Madness</h1>
@@ -105,7 +105,7 @@ export function HomePage() {
 
 function Dashboard({ bracketName }: { bracketName: string | null }) {
   return (
-    <div className="bg-muted font-[Inter,system-ui,sans-serif]">
+    <div className="min-h-screen bg-background font-[Inter,system-ui,sans-serif]">
       <main className="mx-auto max-w-[640px] px-6 py-12">
         <div className="mb-10 text-center">
           <h1 className="mb-1.5 text-2xl font-bold text-foreground">
