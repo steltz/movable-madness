@@ -22,7 +22,7 @@ export function AppBar() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate('/sign-in', { replace: true });
+      navigate('/', { replace: true });
     } catch (err) {
       console.error('Sign out failed:', err);
     }
