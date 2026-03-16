@@ -7,6 +7,7 @@ import { ViewBracketPage } from '../pages/brackets/view/ViewBracketPage';
 import { HomePage } from '../pages/home/home-page';
 import { SignInPage } from '../pages/sign-in/sign-in-page';
 import { AppErrorBoundary } from './app-error-boundary';
+import { AppLayout } from './layouts/app-layout';
 import { AuthProvider, useAuthContext } from './providers/auth-provider';
 import { ThemeProvider } from './providers/theme-provider';
 
@@ -49,36 +50,43 @@ function BracketProtectedRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      {/* No app bar */}
       <Route path="/sign-in" element={<SignInPage />} />
-      <Route path="/brackets/login" element={<Navigate to="/" replace />} />
-      <Route path="/brackets/dashboard" element={<Navigate to="/" replace />} />
-      <Route path="/brackets" element={<BracketsDirectoryPage />} />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminHomePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/settings"
-        element={
-          <ProtectedRoute>
-            <AccountSettingsPage />
-          </ProtectedRoute>
-        }
-      />
       <Route path="/brackets/:bracketId" element={<ViewBracketPage />} />
-      <Route
-        path="/brackets/edit"
-        element={
-          <BracketProtectedRoute>
-            <BracketEditorPage />
-          </BracketProtectedRoute>
-        }
-      />
+
+      {/* App bar shown when authenticated */}
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/brackets" element={<BracketsDirectoryPage />} />
+        <Route
+          path="/brackets/edit"
+          element={
+            <BracketProtectedRoute>
+              <BracketEditorPage />
+            </BracketProtectedRoute>
+          }
+        />
+        <Route path="/brackets/login" element={<Navigate to="/" replace />} />
+        <Route path="/brackets/dashboard" element={<Navigate to="/" replace />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute>
+              <AccountSettingsPage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+
+      {/* 404 - no app bar */}
       <Route
         path="*"
         element={

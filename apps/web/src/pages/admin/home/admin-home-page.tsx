@@ -14,17 +14,15 @@ export function AdminHomePage() {
   const { user } = useAuthContext();
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="flex items-center justify-between border-b bg-card px-6 py-4">
-        <h1 className="text-2xl font-semibold text-card-foreground">Admin Dashboard</h1>
-        <nav>
+    <div className="bg-background">
+      <main className="mx-auto max-w-5xl p-6">
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-2xl font-semibold text-card-foreground">Admin Dashboard</h1>
           <Button variant="ghost" asChild>
             <Link to="/admin/settings">Account Settings</Link>
           </Button>
-        </nav>
-      </header>
+        </div>
 
-      <main className="mx-auto max-w-5xl p-6">
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Welcome back!</CardTitle>
