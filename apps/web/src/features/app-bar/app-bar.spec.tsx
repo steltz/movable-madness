@@ -7,6 +7,13 @@ import { AppBar } from './app-bar';
 const mockSetTheme = vi.fn();
 let mockTheme = 'dark';
 
+vi.mock('../../app/providers/auth-provider', () => ({
+  useAuthContext: () => ({
+    isAnonymous: false,
+    bracketName: null,
+  }),
+}));
+
 vi.mock('../../app/providers/theme-provider', () => ({
   useTheme: () => ({ theme: mockTheme, setTheme: mockSetTheme }),
 }));
