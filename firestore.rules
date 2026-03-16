@@ -21,8 +21,8 @@ service cloud.firestore {
       // All writes go through the NestJS API via Firebase Admin SDK
     }
 
-    // Brackets subcollection — public read for directory
-    match /{path=**}/brackets/{bracketId} {
+    // Brackets collection — public read for directory
+    match /brackets/{bracketId} {
       allow read: if true;
     }
   }

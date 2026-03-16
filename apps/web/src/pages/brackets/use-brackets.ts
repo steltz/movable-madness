@@ -1,5 +1,5 @@
 import type { BracketEntry } from '@movable-madness/shared-types';
-import { collectionGroup, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { getFirebaseDb } from '../../shared/config/firebase';
 
@@ -20,7 +20,7 @@ export function useBrackets(): UseBracketsResult {
 
   useEffect(() => {
     const db = getFirebaseDb();
-    const bracketsQuery = query(collectionGroup(db, 'brackets'), orderBy('createdAt', 'desc'));
+    const bracketsQuery = query(collection(db, 'brackets'), orderBy('createdAt', 'desc'));
 
     const unsubscribe = onSnapshot(
       bracketsQuery,
