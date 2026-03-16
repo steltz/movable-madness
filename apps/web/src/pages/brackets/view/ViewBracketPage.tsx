@@ -12,10 +12,10 @@ function BracketSkeleton() {
       <div className="flex min-w-[1100px] gap-4 px-4 py-6">
         {[32, 16, 8, 4].map((count) => (
           <div key={count} className="flex shrink-0 basis-40 flex-col gap-2">
-            <div className="mx-auto h-3 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="mx-auto h-3 w-20 animate-pulse rounded bg-muted" />
             {Array.from({ length: Math.min(count, 3) }).map((_, j) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton UI with no reordering
-              <div key={j} className="h-12 animate-pulse rounded-md bg-gray-200" />
+              <div key={j} className="h-12 animate-pulse rounded-md bg-muted" />
             ))}
           </div>
         ))}
@@ -54,10 +54,10 @@ export function ViewBracketPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="animate-pulse bg-pink-200 px-6 py-4">
-          <div className="h-6 w-48 rounded bg-pink-300" />
-          <div className="mt-2 h-3 w-32 rounded bg-pink-300" />
+      <div className="min-h-screen bg-background">
+        <div className="animate-pulse bg-brand-muted px-6 py-4">
+          <div className="h-6 w-48 rounded bg-brand-muted/70" />
+          <div className="mt-2 h-3 w-32 rounded bg-brand-muted/70" />
         </div>
         <BracketSkeleton />
       </div>
@@ -66,7 +66,7 @@ export function ViewBracketPage() {
 
   if (error || !bracket) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="max-w-md px-4">
           <Alert variant="destructive">
             <AlertDescription>{error ?? 'Bracket not found'}</AlertDescription>
@@ -75,11 +75,11 @@ export function ViewBracketPage() {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="text-sm text-[#E31C79] underline hover:text-[#c4166a]"
+              className="text-sm text-brand underline hover:text-brand/80"
             >
               Try again
             </button>
-            <Link to="/" className="text-sm text-gray-500 underline hover:text-gray-700">
+            <Link to="/" className="text-sm text-muted-foreground underline hover:text-foreground">
               Go home
             </Link>
           </div>
@@ -89,7 +89,7 @@ export function ViewBracketPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <BracketHeader bracketName={bracket.bracketName} createdAt={bracket.createdAt} />
       <BracketGrid teams={bracket.teams} picks={bracket.picks} />
     </div>

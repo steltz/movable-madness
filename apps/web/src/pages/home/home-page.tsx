@@ -13,8 +13,8 @@ export function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f5f5f5]">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-muted">
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     );
   }
@@ -54,15 +54,18 @@ export function HomePage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f5f5f5] p-4 font-[Inter,system-ui,sans-serif]">
-      <div className="w-full max-w-[400px] rounded-xl bg-white p-10 shadow-[0_4px_24px_rgba(0,0,0,0.08)] text-center">
+    <div className="flex min-h-screen items-center justify-center bg-muted p-4 font-[Inter,system-ui,sans-serif]">
+      <div className="w-full max-w-[400px] rounded-xl bg-card p-10 shadow-lg text-center dark:shadow-xl dark:shadow-black/20">
         <div className="mb-2 text-4xl">🏀</div>
-        <h1 className="mb-1 text-2xl font-bold text-gray-900">Movable Madness</h1>
-        <p className="mb-8 text-sm text-gray-500">Enter your bracket name to get started</p>
+        <h1 className="mb-1 text-2xl font-bold text-foreground">Movable Madness</h1>
+        <p className="mb-8 text-sm text-muted-foreground">Enter your bracket name to get started</p>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-6 text-left">
-            <Label htmlFor="bracketName" className="mb-1.5 block text-xs font-medium text-gray-600">
+            <Label
+              htmlFor="bracketName"
+              className="mb-1.5 block text-xs font-medium text-muted-foreground"
+            >
               Bracket Name
             </Label>
             <Input
@@ -73,24 +76,24 @@ export function HomePage() {
               onChange={(e) => setInputName(e.target.value)}
               maxLength={50}
               disabled={submitting}
-              className="w-full dark:text-gray-900"
+              className="w-full"
             />
           </div>
 
-          {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+          {error && <p className="mb-4 text-sm text-destructive">{error}</p>}
 
           <Button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-[#E31C79] py-3 text-sm font-semibold text-white hover:bg-[#c8186b] disabled:opacity-50"
+            className="w-full rounded-lg bg-brand py-3 text-sm font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-50"
           >
             {submitting ? 'Joining...' : 'Join Tournament'}
           </Button>
         </form>
 
-        <div className="mt-5 flex items-start gap-2 rounded-lg bg-[#FFF8E1] p-3 text-left">
+        <div className="mt-5 flex items-start gap-2 rounded-lg bg-warning p-3 text-left">
           <span className="flex-shrink-0 text-base">⚠️</span>
-          <p className="text-xs leading-relaxed text-[#7a6520]">
+          <p className="text-xs leading-relaxed text-warning-foreground">
             You must use the same browser to return to your picks. Your session is tied to this
             browser only.
           </p>
@@ -110,16 +113,16 @@ function Dashboard({ bracketName }: { bracketName: string | null }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] font-[Inter,system-ui,sans-serif]">
-      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-8 py-4">
+    <div className="min-h-screen bg-muted font-[Inter,system-ui,sans-serif]">
+      <header className="flex items-center justify-between border-b border-border bg-card px-8 py-4">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">🏀</span>
-          <span className="text-lg font-bold text-gray-900">Movable Madness</span>
+          <span className="text-lg font-bold text-foreground">Movable Madness</span>
         </div>
         <Button
           variant="ghost"
           onClick={handleSignOut}
-          className="text-sm font-medium text-[#E31C79] hover:text-[#c8186b]"
+          className="text-sm font-medium text-brand hover:text-brand/80"
         >
           Sign Out
         </Button>
@@ -127,41 +130,43 @@ function Dashboard({ bracketName }: { bracketName: string | null }) {
 
       <main className="mx-auto max-w-[640px] px-6 py-12">
         <div className="mb-10 text-center">
-          <h1 className="mb-1.5 text-2xl font-bold text-gray-900">
+          <h1 className="mb-1.5 text-2xl font-bold text-foreground">
             Welcome, {bracketName ?? 'Player'}! 👋
           </h1>
-          <p className="text-base text-gray-500">What would you like to do?</p>
+          <p className="text-base text-muted-foreground">What would you like to do?</p>
         </div>
 
         <div className="flex flex-col gap-5">
           <Link to="/brackets/edit" className="block">
-            <div className="rounded-xl border-t-[3px] border-t-[#E31C79] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+            <div className="rounded-xl border-t-[3px] border-t-brand bg-card p-7 shadow-md transition-shadow hover:shadow-lg dark:shadow-lg dark:shadow-black/20 dark:hover:shadow-xl dark:hover:shadow-black/25">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] bg-[#FDE8F1] text-2xl">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] bg-brand-muted text-2xl">
                   ✏️
                 </div>
                 <div className="flex-1">
-                  <h3 className="mb-1 text-lg font-semibold text-gray-900">Edit My Bracket</h3>
-                  <p className="text-sm text-gray-500">Make your picks for all 64 teams</p>
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">Edit My Bracket</h3>
+                  <p className="text-sm text-muted-foreground">Make your picks for all 64 teams</p>
                 </div>
-                <span className="text-xl text-gray-300">→</span>
+                <span className="text-xl text-muted-foreground">→</span>
               </div>
             </div>
           </Link>
 
           <Link to="/brackets" className="block">
-            <div className="rounded-xl border-t-[3px] border-t-[#E31C79] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+            <div className="rounded-xl border-t-[3px] border-t-brand bg-card p-7 shadow-md transition-shadow hover:shadow-lg dark:shadow-lg dark:shadow-black/20 dark:hover:shadow-xl dark:hover:shadow-black/25">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] bg-[#FDE8F1] text-2xl">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[10px] bg-brand-muted text-2xl">
                   📊
                 </div>
                 <div className="flex-1">
-                  <h3 className="mb-1 text-lg font-semibold text-gray-900">
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">
                     View Submitted Brackets
                   </h3>
-                  <p className="text-sm text-gray-500">See how others filled out their brackets</p>
+                  <p className="text-sm text-muted-foreground">
+                    See how others filled out their brackets
+                  </p>
                 </div>
-                <span className="text-xl text-gray-300">→</span>
+                <span className="text-xl text-muted-foreground">→</span>
               </div>
             </div>
           </Link>

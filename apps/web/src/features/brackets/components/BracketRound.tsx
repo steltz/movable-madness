@@ -13,7 +13,7 @@ export function BracketRound({ name, matchups, roundIndex, isChampionship }: Bra
 
   return (
     <div className="flex shrink-0 basis-40 flex-col gap-2" style={{ marginTop: topOffset }}>
-      <div className="text-center text-[11px] font-semibold uppercase tracking-wide text-[#E31C79]">
+      <div className="text-center text-[11px] font-semibold uppercase tracking-wide text-brand">
         {name}
       </div>
       {matchups.map((matchup) => (

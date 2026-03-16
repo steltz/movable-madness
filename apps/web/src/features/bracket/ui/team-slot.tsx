@@ -25,7 +25,7 @@ export function TeamSlot({ team, isSelected, onClick }: TeamSlotProps) {
         'flex w-full items-center gap-2 rounded-md border-2 px-3 py-2 text-left text-sm transition-colors',
         'hover:border-foreground/30 cursor-pointer',
         isSelected
-          ? 'border-[#E31C79] bg-[#E31C79]/10 text-foreground'
+          ? 'border-brand bg-brand/10 text-foreground'
           : 'border-transparent bg-card text-foreground',
       )}
     >

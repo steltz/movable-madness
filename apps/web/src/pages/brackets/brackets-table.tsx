@@ -13,17 +13,13 @@ function SkeletonRows() {
       {Array.from({ length: 5 }, (_, i) => `skeleton-${i}`).map((key, i) => (
         <TableRow
           key={key}
-          className={
-            i % 2 === 0
-              ? 'border-0 bg-white dark:bg-zinc-900'
-              : 'border-0 bg-[#fdf2f8] dark:bg-zinc-800'
-          }
+          className={i % 2 === 0 ? 'border-0 bg-card' : 'border-0 bg-brand-muted'}
         >
           <TableCell className="px-5 py-3">
-            <div className="h-4 w-3/5 animate-pulse rounded bg-pink-200 dark:bg-zinc-700" />
+            <div className="h-4 w-3/5 animate-pulse rounded bg-brand-muted" />
           </TableCell>
           <TableCell className="px-5 py-3">
-            <div className="h-4 w-2/6 animate-pulse rounded bg-pink-200 dark:bg-zinc-700" />
+            <div className="h-4 w-2/6 animate-pulse rounded bg-brand-muted" />
           </TableCell>
         </TableRow>
       ))}
@@ -53,12 +49,14 @@ export function BracketsTable({ entries, loading }: BracketsTableProps) {
   const count = loading ? 0 : entries.length;
 
   return (
-    <div className="overflow-hidden rounded-xl border-t-4 border-t-[#E31C79] shadow-md dark:shadow-lg dark:shadow-black/20">
+    <div className="overflow-hidden rounded-xl border-t-4 border-t-brand shadow-md dark:shadow-lg dark:shadow-black/20">
       {/* Branded header bar */}
-      <div className="bg-gradient-to-br from-[#E31C79] to-[#c4156a] px-5 py-4">
-        <span className="text-base font-bold tracking-tight text-white">Submitted Brackets</span>
+      <div className="bg-gradient-to-br from-brand to-brand/85 px-5 py-4">
+        <span className="text-base font-bold tracking-tight text-brand-foreground">
+          Submitted Brackets
+        </span>
         {!loading && (
-          <span className="ml-3 text-[13px] text-white/70">
+          <span className="ml-3 text-[13px] text-brand-foreground/70">
             {count} {count === 1 ? 'participant' : 'participants'}
           </span>
         )}
@@ -66,11 +64,11 @@ export function BracketsTable({ entries, loading }: BracketsTableProps) {
 
       <Table>
         <TableHeader className="sticky top-0 z-10">
-          <TableRow className="border-b-2 border-b-pink-200 bg-[#fdf2f8] hover:bg-[#fdf2f8] dark:border-b-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-800">
-            <TableHead className="px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-[#831843] dark:text-pink-300">
+          <TableRow className="border-b-2 border-b-brand-muted bg-brand-muted hover:bg-brand-muted">
+            <TableHead className="px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-brand-muted-foreground">
               Bracket Name
             </TableHead>
-            <TableHead className="px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-[#831843] dark:text-pink-300">
+            <TableHead className="px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-brand-muted-foreground">
               Status
             </TableHead>
           </TableRow>
@@ -90,8 +88,8 @@ export function BracketsTable({ entries, loading }: BracketsTableProps) {
                 key={entry.id}
                 className={
                   i % 2 === 0
-                    ? 'border-0 bg-white hover:bg-pink-50/50 dark:bg-zinc-900 dark:hover:bg-zinc-900/80'
-                    : 'border-0 bg-[#fdf2f8] hover:bg-pink-100/50 dark:bg-zinc-800 dark:hover:bg-zinc-800/80'
+                    ? 'border-0 bg-card hover:bg-brand-muted/50'
+                    : 'border-0 bg-brand-muted hover:bg-brand-muted/80'
                 }
               >
                 <TableCell className="px-5 py-3 font-medium text-foreground">

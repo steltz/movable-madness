@@ -19,8 +19,8 @@ function TeamRow({
   if (team == null) {
     return (
       <div
-        className={`px-2.5 py-1.5 text-xs text-gray-400 italic${
-          isTop ? '' : ' border-t border-dashed border-gray-200'
+        className={`px-2.5 py-1.5 text-xs text-muted-foreground italic${
+          isTop ? '' : ' border-t border-dashed border-border'
         }`}
       >
         TBD
@@ -31,14 +31,14 @@ function TeamRow({
   return (
     <div
       className={`flex items-center justify-between px-2.5 py-1.5 text-xs${
-        isTop ? '' : ' border-t border-gray-200'
-      }${isWinner ? '' : ' text-gray-400'}`}
+        isTop ? '' : ' border-t border-border'
+      }${isWinner ? '' : ' text-muted-foreground'}`}
     >
       <span>
-        {seed != null && <span className="mr-1 text-[10px] text-gray-400">({seed})</span>}
+        {seed != null && <span className="mr-1 text-[10px] text-muted-foreground">({seed})</span>}
         {team}
       </span>
-      {isWinner && <span className="font-semibold text-[#E31C79]">&#10003;</span>}
+      {isWinner && <span className="font-semibold text-brand">&#10003;</span>}
     </div>
   );
 }
@@ -46,13 +46,13 @@ function TeamRow({
 export function MatchupCard({ matchup, isChampionship = false }: MatchupCardProps) {
   const hasAnyTeam = matchup.topTeam != null || matchup.bottomTeam != null;
   const borderClass = isChampionship
-    ? 'border-2 border-[#E31C79] rounded-lg'
+    ? 'border-2 border-brand rounded-lg'
     : hasAnyTeam
-      ? 'border border-gray-300 rounded-md'
-      : 'border border-dashed border-gray-300 rounded-md';
+      ? 'border border-border rounded-md'
+      : 'border border-dashed border-border rounded-md';
 
   return (
-    <div className={`bg-white overflow-hidden ${borderClass}`}>
+    <div className={`bg-card overflow-hidden ${borderClass}`}>
       <TeamRow
         team={matchup.topTeam}
         seed={matchup.topSeed}
