@@ -43,30 +43,36 @@ export function AppBar() {
           Movable Madness
         </Link>
 
-        <span className="text-muted-foreground">/</span>
+        {breadcrumbs.length > 0 && (
+          <>
+            <span className="text-muted-foreground">/</span>
 
-        {/* Full breadcrumb trail — hidden on small screens */}
-        <Breadcrumb className="hidden sm:block">
-          <BreadcrumbList>
-            {breadcrumbs.map((crumb, index) => (
-              <Fragment key={crumb.path}>
-                {index > 0 && <BreadcrumbSeparator>/</BreadcrumbSeparator>}
-                <BreadcrumbItem>
-                  {crumb.isCurrentPage ? (
-                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink asChild>
-                      <Link to={crumb.path}>{crumb.label}</Link>
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-              </Fragment>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
+            {/* Full breadcrumb trail — hidden on small screens */}
+            <Breadcrumb className="hidden sm:block">
+              <BreadcrumbList>
+                {breadcrumbs.map((crumb, index) => (
+                  <Fragment key={crumb.path}>
+                    {index > 0 && <BreadcrumbSeparator>/</BreadcrumbSeparator>}
+                    <BreadcrumbItem>
+                      {crumb.isCurrentPage ? (
+                        <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink asChild>
+                          <Link to={crumb.path}>{crumb.label}</Link>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                  </Fragment>
+                ))}
+              </BreadcrumbList>
+            </Breadcrumb>
 
-        {/* Current page only — shown on small screens */}
-        <span className="text-sm font-medium text-foreground sm:hidden">{currentPage.label}</span>
+            {/* Current page only — shown on small screens */}
+            <span className="text-sm font-medium text-foreground sm:hidden">
+              {currentPage?.label}
+            </span>
+          </>
+        )}
       </div>
 
       <div className="flex items-center gap-2">

@@ -12,40 +12,32 @@ function renderWithRouter(initialPath: string) {
 }
 
 describe('useBreadcrumbs', () => {
-  it('should return only Home for root path', () => {
+  it('should return empty array for root path', () => {
     const { result } = renderWithRouter('/');
-    expect(result.current).toEqual([{ label: 'Home', path: '/', isCurrentPage: true }]);
+    expect(result.current).toEqual([]);
   });
 
-  it('should return Home and Brackets for /brackets', () => {
+  it('should return Brackets for /brackets', () => {
     const { result } = renderWithRouter('/brackets');
-    expect(result.current).toEqual([
-      { label: 'Home', path: '/', isCurrentPage: false },
-      { label: 'Brackets', path: '/brackets', isCurrentPage: true },
-    ]);
+    expect(result.current).toEqual([{ label: 'Brackets', path: '/brackets', isCurrentPage: true }]);
   });
 
-  it('should return Home, Brackets, and Edit Bracket for /brackets/edit', () => {
+  it('should return Brackets and Edit Bracket for /brackets/edit', () => {
     const { result } = renderWithRouter('/brackets/edit');
     expect(result.current).toEqual([
-      { label: 'Home', path: '/', isCurrentPage: false },
       { label: 'Brackets', path: '/brackets', isCurrentPage: false },
       { label: 'Edit Bracket', path: '/brackets/edit', isCurrentPage: true },
     ]);
   });
 
-  it('should return Home and Admin for /admin', () => {
+  it('should return Admin for /admin', () => {
     const { result } = renderWithRouter('/admin');
-    expect(result.current).toEqual([
-      { label: 'Home', path: '/', isCurrentPage: false },
-      { label: 'Admin', path: '/admin', isCurrentPage: true },
-    ]);
+    expect(result.current).toEqual([{ label: 'Admin', path: '/admin', isCurrentPage: true }]);
   });
 
-  it('should return Home, Admin, and Settings for /admin/settings', () => {
+  it('should return Admin and Settings for /admin/settings', () => {
     const { result } = renderWithRouter('/admin/settings');
     expect(result.current).toEqual([
-      { label: 'Home', path: '/', isCurrentPage: false },
       { label: 'Admin', path: '/admin', isCurrentPage: false },
       { label: 'Settings', path: '/admin/settings', isCurrentPage: true },
     ]);
@@ -53,9 +45,6 @@ describe('useBreadcrumbs', () => {
 
   it('should use capitalized segment name for unknown paths', () => {
     const { result } = renderWithRouter('/unknown');
-    expect(result.current).toEqual([
-      { label: 'Home', path: '/', isCurrentPage: false },
-      { label: 'Unknown', path: '/unknown', isCurrentPage: true },
-    ]);
+    expect(result.current).toEqual([{ label: 'Unknown', path: '/unknown', isCurrentPage: true }]);
   });
 });

@@ -46,15 +46,19 @@ describe('AppBar', () => {
 
   it('should render breadcrumbs for the current path', () => {
     renderAppBar('/brackets');
-    expect(screen.getByText('Home')).toBeInTheDocument();
     // Text appears twice: in breadcrumb and in mobile view
     expect(screen.getAllByText('Brackets').length).toBeGreaterThan(0);
   });
 
+  it('should not render breadcrumbs on home page', () => {
+    renderAppBar('/');
+    // Only "Movable Madness" should be present, no separator or breadcrumbs
+    expect(screen.getByText('Movable Madness')).toBeInTheDocument();
+    expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  });
+
   it('should render ancestor breadcrumbs as links', () => {
     renderAppBar('/admin/settings');
-    const homeLink = screen.getByText('Home').closest('a');
-    expect(homeLink).toHaveAttribute('href', '/');
     const adminLink = screen.getByText('Admin').closest('a');
     expect(adminLink).toHaveAttribute('href', '/admin');
   });
