@@ -105,7 +105,7 @@ export function HomePage() {
 
 function Dashboard({ bracketName }: { bracketName: string | null }) {
   return (
-    <div className="bg-[#f5f5f5] font-[Inter,system-ui,sans-serif]">
+    <div className="bg-muted font-[Inter,system-ui,sans-serif]">
       <main className="mx-auto max-w-[640px] px-6 py-12">
         <div className="mb-10 text-center">
           <h1 className="mb-1.5 text-2xl font-bold text-foreground">

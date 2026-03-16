@@ -18,11 +18,11 @@ export function useBreadcrumbs(): BreadcrumbSegment[] {
   const { pathname } = useLocation();
 
   if (pathname === '/') {
-    return [{ label: 'Home', path: '/', isCurrentPage: true }];
+    return [];
   }
 
   const segments = pathname.split('/').filter(Boolean);
-  const crumbs: BreadcrumbSegment[] = [{ label: 'Home', path: '/', isCurrentPage: false }];
+  const crumbs: BreadcrumbSegment[] = [];
 
   segments.forEach((segment, index) => {
     const path = `/${segments.slice(0, index + 1).join('/')}`;
