@@ -28,12 +28,7 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
   } = useBracket({ bracketName });
 
   if (isSubmitted) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-        <h1 className="text-3xl font-bold text-foreground">Bracket Submitted!</h1>
-        <p className="text-muted-foreground">Your bracket "{bracketName}" has been saved.</p>
-      </div>
-    );
+    return <Navigate to="/brackets" replace />;
   }
 
   return (
