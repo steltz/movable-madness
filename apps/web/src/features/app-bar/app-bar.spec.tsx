@@ -11,20 +11,6 @@ vi.mock('../../app/providers/theme-provider', () => ({
   useTheme: () => ({ theme: mockTheme, setTheme: mockSetTheme }),
 }));
 
-const mockSignOut = vi.fn().mockResolvedValue(undefined);
-vi.mock('../auth', () => ({
-  signOut: (...args: unknown[]) => mockSignOut(...args),
-}));
-
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
 const renderAppBar = (path = '/') =>
   render(
     <MemoryRouter initialEntries={[path]}>
@@ -70,19 +56,6 @@ describe('AppBar', () => {
     settingsElements.forEach((element) => {
       expect(element.closest('a')).toBeNull();
     });
-  });
-
-  it('should render sign out button', () => {
-    renderAppBar();
-    expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument();
-  });
-
-  it('should call signOut and navigate to / on sign out click', async () => {
-    const user = userEvent.setup();
-    renderAppBar();
-    await user.click(screen.getByRole('button', { name: /sign out/i }));
-    expect(mockSignOut).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
   });
 
   it('should render theme toggle button', () => {

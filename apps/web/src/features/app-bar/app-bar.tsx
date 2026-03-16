@@ -7,26 +7,15 @@ import {
   BreadcrumbSeparator,
   Button,
 } from '@movable-madness/ui';
-import { LogOut, Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../app/providers/theme-provider';
-import { signOut } from '../auth';
 import { useBreadcrumbs } from './use-breadcrumbs';
 
 export function AppBar() {
   const breadcrumbs = useBreadcrumbs();
   const { theme, setTheme } = useTheme();
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/', { replace: true });
-    } catch (err) {
-      console.error('Sign out failed:', err);
-    }
-  };
 
   const handleToggleTheme = () => {
     // Two-state toggle: dark <-> light. Treat 'system' as dark.
@@ -78,11 +67,6 @@ export function AppBar() {
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" onClick={handleToggleTheme} aria-label="Toggle theme">
           {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-        </Button>
-
-        <Button variant="ghost" size="sm" onClick={handleSignOut}>
-          <LogOut className="mr-1.5 h-4 w-4" />
-          Sign Out
         </Button>
       </div>
     </header>
