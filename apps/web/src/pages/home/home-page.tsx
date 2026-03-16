@@ -2,7 +2,7 @@ import { Button, Input, Label } from '@movable-madness/ui';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../app/providers/auth-provider';
-import { signInAnonymously, signOut } from '../../features/auth';
+import { signInAnonymously } from '../../features/auth';
 import { post } from '../../shared/api/api-client';
 
 export function HomePage() {
@@ -104,30 +104,8 @@ export function HomePage() {
 }
 
 function Dashboard({ bracketName }: { bracketName: string | null }) {
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (err) {
-      console.error('Sign out failed:', err);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-muted font-[Inter,system-ui,sans-serif]">
-      <header className="flex items-center justify-between border-b border-border bg-card px-8 py-4">
-        <div className="flex items-center gap-2.5">
-          <span className="text-xl">🏀</span>
-          <span className="text-lg font-bold text-foreground">Movable Madness</span>
-        </div>
-        <Button
-          variant="ghost"
-          onClick={handleSignOut}
-          className="text-sm font-medium text-brand hover:text-brand/80"
-        >
-          Sign Out
-        </Button>
-      </header>
-
+    <div className="bg-[#f5f5f5] font-[Inter,system-ui,sans-serif]">
       <main className="mx-auto max-w-[640px] px-6 py-12">
         <div className="mb-10 text-center">
           <h1 className="mb-1.5 text-2xl font-bold text-foreground">

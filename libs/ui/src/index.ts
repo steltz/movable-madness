@@ -13,6 +13,15 @@ export {
   AlertDialogTrigger,
 } from './components/alert-dialog';
 export { Badge, badgeVariants } from './components/badge';
+export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from './components/breadcrumb';
 export { Button, buttonVariants } from './components/button';
 export {
   Card,

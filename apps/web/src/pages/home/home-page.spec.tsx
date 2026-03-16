@@ -18,7 +18,6 @@ vi.mock('../../app/providers/auth-provider', () => ({
 
 vi.mock('../../features/auth', () => ({
   signInAnonymously: vi.fn().mockResolvedValue({ uid: 'test-uid' }),
-  signOut: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock('../../shared/api/api-client', () => ({
@@ -95,11 +94,6 @@ describe('HomePage', () => {
       expect(screen.getByText('View Submitted Brackets')).toBeInTheDocument();
       const link = screen.getByText('View Submitted Brackets').closest('a');
       expect(link).toHaveAttribute('href', '/brackets');
-    });
-
-    it('should render Sign Out button', () => {
-      renderPage();
-      expect(screen.getByText('Sign Out')).toBeInTheDocument();
     });
 
     it('should show fallback name when bracketName is null', () => {
