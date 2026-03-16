@@ -145,3 +145,29 @@ export function countPicks(picks: BracketPicks): number {
 export function isComplete(picks: BracketPicks): boolean {
   return countPicks(picks) === TOTAL_MATCHUPS;
 }
+
+/**
+ * Generate a complete bracket with random picks (50/50 coin flip per matchup).
+ * Iterates round-by-round so later rounds can reference earlier winners.
+ */
+export function generateRandomPicks(): BracketPicks {
+  const picks: BracketPicks = {};
+
+  for (let round = 1; round <= 6; round++) {
+    const count = matchupsInRound(round);
+    for (let i = 0; i < count; i++) {
+      if (round === 1) {
+        const [team1, team2] = getFirstRoundTeams(i);
+        picks[matchupId(round, i)] = Math.random() < 0.5 ? team1.id : team2.id;
+      } else {
+        const [feeder1, feeder2] = getFeederMatchupIds(round, i);
+        // Feeder matchups are guaranteed to be filled from previous rounds
+        const team1Id = picks[feeder1] as number;
+        const team2Id = picks[feeder2] as number;
+        picks[matchupId(round, i)] = Math.random() < 0.5 ? team1Id : team2Id;
+      }
+    }
+  }
+
+  return picks;
+}

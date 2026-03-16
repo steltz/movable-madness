@@ -1,3 +1,15 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button,
+} from '@movable-madness/ui';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../../app/providers/auth-provider';
 import { useBracket } from '../model/use-bracket';
@@ -25,7 +37,23 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
     isSubmitting,
     submitError,
     isSubmitted,
+    quickPick,
   } = useBracket({ bracketName });
+
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleQuickPick = () => {
+    if (picksCount > 0) {
+      setShowConfirm(true);
+    } else {
+      quickPick();
+    }
+  };
+
+  const handleConfirmQuickPick = () => {
+    quickPick();
+    setShowConfirm(false);
+  };
 
   if (isSubmitted) {
     return <Navigate to="/brackets" replace />;
@@ -33,9 +61,14 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border px-6 py-4">
-        <h1 className="text-xl font-bold text-foreground">{bracketName}</h1>
-        <p className="text-sm text-muted-foreground">Click a team to advance them</p>
+      <header className="flex items-center justify-between border-b border-border px-6 py-4">
+        <div>
+          <h1 className="text-xl font-bold text-foreground">{bracketName}</h1>
+          <p className="text-sm text-muted-foreground">Click a team to advance them</p>
+        </div>
+        <Button variant="outline" aria-label="Quick Pick" onClick={handleQuickPick}>
+          🎲 Quick Pick
+        </Button>
       </header>
       <BracketGrid picks={picks} getTeams={getTeams} onSelectWinner={selectWinner} />
       <SubmitFooter
@@ -45,6 +78,20 @@ function BracketEditorContent({ bracketName }: { bracketName: string }) {
         submitError={submitError}
         onSubmit={submitBracket}
       />
+      <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Replace all picks?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will replace all your current picks with random selections.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmQuickPick}>Quick Pick</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

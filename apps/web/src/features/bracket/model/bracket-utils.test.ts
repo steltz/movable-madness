@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   countPicks,
   createEmptyPicks,
+  generateRandomPicks,
   getFeederMatchupIds,
   getFirstRoundTeams,
   getMatchupTeams,
@@ -176,5 +177,51 @@ describe('countPicks / isComplete', () => {
     const [team1] = getFirstRoundTeams(0);
     picks = selectWinner(picks, 'R1_M0', team1.id);
     expect(countPicks(picks)).toBe(1);
+  });
+});
+
+describe('generateRandomPicks', () => {
+  it('returns a complete bracket with all 63 picks', () => {
+    const picks = generateRandomPicks();
+    expect(countPicks(picks)).toBe(63);
+    expect(isComplete(picks)).toBe(true);
+  });
+
+  it('every pick is a valid team ID (1-64)', () => {
+    const picks = generateRandomPicks();
+    for (const value of Object.values(picks)) {
+      expect(value).toBeGreaterThanOrEqual(1);
+      expect(value).toBeLessThanOrEqual(64);
+    }
+  });
+
+  it('round 1 picks are one of the two matched teams', () => {
+    const picks = generateRandomPicks();
+    for (let i = 0; i < 32; i++) {
+      const [team1, team2] = getFirstRoundTeams(i);
+      const pick = picks[matchupId(1, i)];
+      expect([team1.id, team2.id]).toContain(pick);
+    }
+  });
+
+  it('round 2+ picks are one of the two feeder winners', () => {
+    const picks = generateRandomPicks();
+    for (let round = 2; round <= 6; round++) {
+      const count = matchupsInRound(round);
+      for (let i = 0; i < count; i++) {
+        const [feeder1, feeder2] = getFeederMatchupIds(round, i);
+        const pick = picks[matchupId(round, i)];
+        expect([picks[feeder1], picks[feeder2]]).toContain(pick);
+      }
+    }
+  });
+
+  it('produces different results across multiple calls', () => {
+    const results = new Set<string>();
+    for (let n = 0; n < 10; n++) {
+      const picks = generateRandomPicks();
+      results.add(JSON.stringify(picks));
+    }
+    expect(results.size).toBeGreaterThan(1);
   });
 });
