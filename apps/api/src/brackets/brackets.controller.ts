@@ -1,5 +1,9 @@
 import type { AuthUser } from '@movable-madness/auth';
-import type { ApiResponse, BracketDocument } from '@movable-madness/shared-types';
+import type {
+  ApiResponse,
+  BracketDocument,
+  BracketSubmission,
+} from '@movable-madness/shared-types';
 import {
   BadRequestException,
   Body,
@@ -24,6 +28,24 @@ interface JoinBracketBody {
 @Controller('brackets')
 export class BracketsController {
   constructor(private readonly bracketsService: BracketsService) {}
+
+  @Post()
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Submit a completed bracket' })
+  @SwaggerResponse({ status: 201, description: 'Bracket submitted successfully' })
+  @SwaggerResponse({ status: 400, description: 'Invalid bracket submission' })
+  async submit(
+    @CurrentUser() user: AuthUser,
+    @Body() body: BracketSubmission,
+  ): Promise<ApiResponse<{ bracketId: string }>> {
+    const bracketId = await this.bracketsService.submitBracket(user.uid, body);
+
+    return {
+      success: true,
+      data: { bracketId },
+      timestamp: new Date().toISOString(),
+    };
+  }
 
   @Post('join')
   @UseGuards(AuthGuard)

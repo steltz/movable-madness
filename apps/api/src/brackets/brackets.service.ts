@@ -1,4 +1,4 @@
-import type { BracketDocument } from '@movable-madness/shared-types';
+import type { BracketDocument, BracketSubmission } from '@movable-madness/shared-types';
 import { Injectable } from '@nestjs/common';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 
@@ -29,6 +29,29 @@ export class BracketsService {
       { merge: false },
     );
     return { isNew: true };
+  }
+
+  async submitBracket(uid: string, submission: BracketSubmission): Promise<string> {
+    const db = getFirestore();
+    const docRef = db.collection('brackets').doc();
+
+    const picks: Record<string, string> = {};
+    for (const [key, value] of Object.entries(submission.picks)) {
+      if (value != null) {
+        picks[key] = String(value);
+      }
+    }
+
+    await docRef.set({
+      bracketName: submission.bracketName,
+      userId: uid,
+      picks,
+      teams: [],
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+
+    return docRef.id;
   }
 
   async findById(bracketId: string): Promise<BracketDocument | null> {
