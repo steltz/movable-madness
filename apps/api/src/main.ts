@@ -12,6 +12,8 @@ async function bootstrap() {
   const logger = app.get(StructuredLogger);
   app.useLogger(logger);
 
+  app.setGlobalPrefix('api');
+
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
