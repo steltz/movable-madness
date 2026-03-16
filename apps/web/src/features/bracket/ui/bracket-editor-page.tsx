@@ -8,7 +8,7 @@ export function BracketEditorPage() {
   const { bracketName } = useAuthContext();
 
   if (!bracketName) {
-    return <Navigate to="/brackets/dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <BracketEditorContent bracketName={bracketName} />;
