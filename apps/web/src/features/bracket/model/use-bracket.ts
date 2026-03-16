@@ -6,6 +6,7 @@ import {
   isComplete as checkIsComplete,
   countPicks,
   createEmptyPicks,
+  generateRandomPicks,
   getMatchupTeams,
 } from './bracket-utils';
 
@@ -23,6 +24,7 @@ interface UseBracketReturn {
   isSubmitting: boolean;
   submitError: string | null;
   isSubmitted: boolean;
+  quickPick: () => void;
 }
 
 export function useBracket({ bracketName }: UseBracketOptions): UseBracketReturn {
@@ -61,6 +63,10 @@ export function useBracket({ bracketName }: UseBracketOptions): UseBracketReturn
     }
   }, [bracketName, picks, isComplete]);
 
+  const quickPick = useCallback(() => {
+    setPicks(generateRandomPicks());
+  }, []);
+
   return {
     picks,
     selectWinner,
@@ -71,5 +77,6 @@ export function useBracket({ bracketName }: UseBracketOptions): UseBracketReturn
     isSubmitting,
     submitError,
     isSubmitted,
+    quickPick,
   };
 }
