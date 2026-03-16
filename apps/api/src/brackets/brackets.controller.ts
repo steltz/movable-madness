@@ -68,6 +68,35 @@ export class BracketsController {
     };
   }
 
+  @Get('mine')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: "Get the current user's bracket" })
+  @SwaggerResponse({ status: 200, description: "Returns the user's bracket" })
+  @SwaggerResponse({ status: 404, description: 'No bracket found for user' })
+  async getMyBracket(@CurrentUser() user: AuthUser, @Res() res: Response): Promise<void> {
+    const bracket = await this.bracketsService.findByUserId(user.uid);
+
+    if (!bracket) {
+      const errorResponse: ApiResponse<never> = {
+        success: false,
+        error: {
+          code: 'BRACKET_NOT_FOUND',
+          message: 'Bracket not found',
+        },
+        timestamp: new Date().toISOString(),
+      };
+      res.status(404).json(errorResponse);
+      return;
+    }
+
+    const response: ApiResponse<BracketDocument> = {
+      success: true,
+      data: bracket,
+      timestamp: new Date().toISOString(),
+    };
+    res.status(200).json(response);
+  }
+
   @Get(':bracketId')
   @ApiOperation({ summary: 'Get a bracket by ID' })
   @ApiParam({
