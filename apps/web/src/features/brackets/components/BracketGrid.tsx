@@ -23,12 +23,14 @@ export function BracketGrid({ teams, picks }: BracketGridProps) {
             />
             {i === 5 && (
               <div className="mt-3 text-center">
-                <div className="text-[10px] uppercase tracking-wide text-gray-400">Champion</div>
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Champion
+                </div>
                 <div
                   className={`mt-1 rounded-lg border-2 border-dashed px-3 py-2 text-base font-bold ${
                     champion
-                      ? 'border-[#E31C79] bg-pink-50 text-[#E31C79]'
-                      : 'border-gray-300 bg-gray-50 text-gray-400 italic'
+                      ? 'border-brand bg-brand-muted text-brand'
+                      : 'border-border bg-muted text-muted-foreground italic'
                   }`}
                 >
                   {champion ?? 'TBD'}

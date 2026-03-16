@@ -25,7 +25,7 @@ export function BracketHeader({ bracketName, createdAt }: BracketHeaderProps) {
   });
 
   return (
-    <div className="flex items-center justify-between bg-[#E31C79] px-6 py-4 text-white">
+    <div className="flex items-center justify-between bg-brand px-6 py-4 text-brand-foreground">
       <div>
         <h1 className="text-xl font-bold">{bracketName}</h1>
         <p className="mt-0.5 text-sm opacity-85">Submitted {formattedDate}</p>

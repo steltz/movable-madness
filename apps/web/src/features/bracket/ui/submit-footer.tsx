@@ -23,8 +23,8 @@ export function SubmitFooter({
           {submitError}
         </div>
       )}
-      <div className="flex items-center justify-between bg-[#E31C79] px-6 py-4">
-        <span className="text-sm font-medium text-white">
+      <div className="flex items-center justify-between bg-brand px-6 py-4">
+        <span className="text-sm font-medium text-brand-foreground">
           <span className="font-bold">
             {picksCount} of {TOTAL_MATCHUPS}
           </span>{' '}
