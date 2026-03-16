@@ -7,15 +7,26 @@ import {
   BreadcrumbSeparator,
   Button,
 } from '@movable-madness/ui';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Pencil, Sun } from 'lucide-react';
 import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../app/providers/auth-provider';
 import { useTheme } from '../../app/providers/theme-provider';
+import { BRACKET_LOCK_DATE } from '../bracket/model/bracket-config';
 import { useBreadcrumbs } from './use-breadcrumbs';
 
 export function AppBar() {
   const breadcrumbs = useBreadcrumbs();
   const { theme, setTheme } = useTheme();
+  const { isAnonymous, bracketName } = useAuthContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const showEditBracket =
+    isAnonymous &&
+    bracketName !== null &&
+    new Date() < BRACKET_LOCK_DATE &&
+    location.pathname !== '/brackets/edit';
 
   const handleToggleTheme = () => {
     // Two-state toggle: dark <-> light. Treat 'system' as dark.
@@ -65,6 +76,17 @@ export function AppBar() {
       </div>
 
       <div className="flex items-center gap-2">
+        {showEditBracket && (
+          <Button
+            size="sm"
+            className="bg-[#E31C79] text-white hover:bg-[#c8186b]"
+            onClick={() => navigate('/brackets/edit')}
+          >
+            <Pencil className="mr-1.5 h-4 w-4" />
+            Edit Bracket
+          </Button>
+        )}
+
         <Button variant="ghost" size="icon" onClick={handleToggleTheme} aria-label="Toggle theme">
           {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
         </Button>
