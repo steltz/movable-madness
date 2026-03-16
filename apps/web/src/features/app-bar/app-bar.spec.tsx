@@ -77,12 +77,12 @@ describe('AppBar', () => {
     expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument();
   });
 
-  it('should call signOut and navigate to /sign-in on sign out click', async () => {
+  it('should call signOut and navigate to / on sign out click', async () => {
     const user = userEvent.setup();
     renderAppBar();
     await user.click(screen.getByRole('button', { name: /sign out/i }));
     expect(mockSignOut).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith('/sign-in', { replace: true });
+    expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
   });
 
   it('should render theme toggle button', () => {
